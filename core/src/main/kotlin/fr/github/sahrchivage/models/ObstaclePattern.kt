@@ -24,7 +24,7 @@ class ObstaclePattern(
 
     companion object {
         fun fromData(data: List<ObstacleData>): ObstaclePattern {
-            val world = Main.getMain().world
+            val world = Main.getMain().worldManager.world
             val obstacles = data.map {
                 Obstacle(
                     world,
