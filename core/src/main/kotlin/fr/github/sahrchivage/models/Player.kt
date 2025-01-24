@@ -37,9 +37,9 @@ class Player : BaseModel(), IAnimable
 
         val fixtureDef = FixtureDef()
         fixtureDef.shape = shape
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0.6f;
+        fixtureDef.density = 1f
+        fixtureDef.friction = 0f
+        fixtureDef.restitution = 0.6f
 
         fixture = this.body.createFixture(fixtureDef)
         body.resetMassData()
@@ -52,7 +52,7 @@ class Player : BaseModel(), IAnimable
 
     fun update() {
         if (Gdx.input.isKeyPressed(Input.Keys.D))
-            this.body.applyForce(Vector2(100f, 0f), body.position, true)
+            this.body.applyForce(Vector2(0f, 0f), body.position, true)
 
         currentAnimation?.render()
     }
