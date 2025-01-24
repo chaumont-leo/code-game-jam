@@ -1,24 +1,18 @@
 package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
 import fr.github.sahrchivage.Main
 
-class SettingScreen : ScreenAdapter() {
-    private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
+class SettingScreen : AbstractScreen() {
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val logoTexture = Texture(Gdx.files.internal("ui/logo.png")) // Charger le logo
     private val background = TextureRegion(backgroundTexture)
@@ -27,9 +21,10 @@ class SettingScreen : ScreenAdapter() {
     private var volume: Float = 0.5f // Valeur initiale du volume
     private var difficulty: String = "Moyenne" // Valeur initiale de la difficulté
     private var language: String = "Français" // Valeur initiale de la langue
+    private val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
+        super.show()
 
         // Logo au lieu du titre
         val logoWidth = 500f
@@ -38,7 +33,7 @@ class SettingScreen : ScreenAdapter() {
         val logoY = stage.viewport.worldHeight - logoHeight - 50f
 
         // Bouton Retour
-        val quitButton = TextButton("Retour", Skin(Gdx.files.internal("ui/uiskin.json")))
+        val quitButton = TextButton("Retour", skin)
         quitButton.setSize(200f, 50f)
         quitButton.setPosition(
             stage.viewport.worldWidth / 2 - quitButton.width / 2,
@@ -53,7 +48,7 @@ class SettingScreen : ScreenAdapter() {
         stage.addActor(quitButton)
 
         // Curseur Volume
-        val volumeLabel = Label("Volume", Skin(Gdx.files.internal("ui/uiskin.json")))
+        val volumeLabel = Label("Volume", skin)
         volumeLabel.setPosition(stage.viewport.worldWidth / 2 - volumeLabel.width / 2, stage.viewport.worldHeight - 200f)
         stage.addActor(volumeLabel)
 
@@ -70,11 +65,11 @@ class SettingScreen : ScreenAdapter() {
         stage.addActor(volumeSlider)
 
         // Sélecteur de difficulté
-        val difficultyLabel = Label("Difficulté", Skin(Gdx.files.internal("ui/uiskin.json")))
+        val difficultyLabel = Label("Difficulté", skin)
         difficultyLabel.setPosition(stage.viewport.worldWidth / 2 - difficultyLabel.width / 2, stage.viewport.worldHeight - 350f)
         stage.addActor(difficultyLabel)
 
-        val difficultySelect = SelectBox<String>(Skin(Gdx.files.internal("ui/uiskin.json")))
+        val difficultySelect = SelectBox<String>(skin)
         difficultySelect.setItems("Facile", "Moyen", "Difficile")
         difficultySelect.setSize(200f, 50f)
         difficultySelect.setPosition(stage.viewport.worldWidth / 2 - difficultySelect.width / 2, stage.viewport.worldHeight - 400f)
@@ -87,11 +82,11 @@ class SettingScreen : ScreenAdapter() {
         stage.addActor(difficultySelect)
 
         // Sélecteur de langue
-        val languageLabel = Label("Langue", Skin(Gdx.files.internal("ui/uiskin.json")))
+        val languageLabel = Label("Langue", skin)
         languageLabel.setPosition(stage.viewport.worldWidth / 2 - languageLabel.width / 2, stage.viewport.worldHeight - 500f)
         stage.addActor(languageLabel)
 
-        val languageSelect = SelectBox<String>(Skin(Gdx.files.internal("ui/uiskin.json")))
+        val languageSelect = SelectBox<String>(skin)
         languageSelect.setItems("Français", "Anglais")
         languageSelect.setSize(200f, 50f)
         languageSelect.setPosition(stage.viewport.worldWidth / 2 - languageSelect.width / 2, stage.viewport.worldHeight - 550f)
@@ -104,12 +99,8 @@ class SettingScreen : ScreenAdapter() {
         stage.addActor(languageSelect)
     }
 
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
     override fun render(delta: Float) {
-        ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
+        super.render(delta)
 
         // Dessiner le fond d'écran
         spriteBatch.projectionMatrix = stage.camera.combined
@@ -131,6 +122,7 @@ class SettingScreen : ScreenAdapter() {
         backgroundTexture.dispose()
         logoTexture.dispose()
         spriteBatch.dispose()
+        skin.dispose()
     }
 }
 

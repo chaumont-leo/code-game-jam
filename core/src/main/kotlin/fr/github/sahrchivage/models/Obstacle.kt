@@ -9,7 +9,7 @@ import fr.github.sahrchivage.Main
 import fr.github.sahrchivage.utils.getInternalTexture
 
 open class Obstacle(
-    internal var world: World = Main.getMain().world,
+    internal var world: World = Main.getMain().worldManager.world,
     var x: Float = 0f,
     var y: Float = 0f,
     val width: Float = 0f,
@@ -55,7 +55,7 @@ open class Obstacle(
     }
 
     fun dispose() {
-        body.fixtureList.forEach { world.destroyBody(body) }
+        body.fixtureList.forEach { _ -> world.destroyBody(body) }
         texture.dispose()
     }
 }
