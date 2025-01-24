@@ -13,20 +13,15 @@ import fr.github.sahrchivage.screens.TitleScreen
 
 class Main : Game() {
     lateinit var worldManager: WorldManager
-    lateinit var player: Player
-    var accumulator: Float = 0f
+    var player: Player? = null
 
     override fun create() {
         worldManager = WorldManager()
-        player = Player()
         setScreen(TitleScreen())
     }
 
-    override fun render() {
-        screen.render(Gdx.graphics.deltaTime)
-    }
-
     fun startGame() {
+        player = Player()
         this.setScreen(GameScreen())
     }
 
