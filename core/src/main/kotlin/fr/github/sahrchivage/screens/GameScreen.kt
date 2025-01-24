@@ -22,7 +22,7 @@ class GameScreen : AbstractScreen() {
     private val batch = SpriteBatch()
 
     override fun show() {
-        groundTexture = Texture(Gdx.files.internal("ui/floor/terrainherbe.png"))
+        groundTexture = Texture(Gdx.files.internal("ui/floor/ground.png"))
         Gdx.input.inputProcessor = stage
         renderer = ShapeRenderer()
         main.player?.startAnimate(AnimationEnum.PLAYER_IDLE_ANIMATION)
