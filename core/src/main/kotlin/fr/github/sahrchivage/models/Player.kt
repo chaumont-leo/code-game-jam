@@ -12,20 +12,9 @@ import fr.github.sahrchivage.utils.getInternalTextureAtlas
 class Player : BaseModel(), IAnimable
 {
 
-    private val idleAnimation = SpriteAnimator(2, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Idle"), 0.3f).also {
-        it.size = PLAYER_SCALE
-        it.offsetX = PLAYER_SPRITE_OFFSET
-    }
-
-    private val walkAnimation = SpriteAnimator(4, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Run"), 0.2f).also {
-        it.size = PLAYER_SCALE
-        it.offsetX = PLAYER_SPRITE_OFFSET
-    }
-
-    private val jumpAnimation = SpriteAnimator(11, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Jump"), 0.1f).also {
-        it.size = PLAYER_SCALE
-        it.offsetX = PLAYER_SPRITE_OFFSET
-    }
+    private val idleAnimation = SpriteAnimator.createPlayerAnimation(2, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Idle"), 0.3f)
+    private val walkAnimation = SpriteAnimator.createPlayerAnimation(4, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Run"), 0.2f)
+    private val jumpAnimation = SpriteAnimator.createPlayerAnimation(11, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Jump"), 0.1f)
 
     private var currentAnimation: SpriteAnimator? = null
 
@@ -51,9 +40,6 @@ class Player : BaseModel(), IAnimable
     }
 
     fun update() {
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
-            this.body.applyForce(Vector2(0f, 0f), body.position, true)
-
         currentAnimation?.render()
     }
 

@@ -9,8 +9,6 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import com.badlogic.gdx.physics.box2d.PolygonShape
-import fr.github.sahrchivage.PLAYER_HEIGHT
-import fr.github.sahrchivage.PLAYER_WIDTH
 import fr.github.sahrchivage.enums.AnimationEnum
 
 class GameScreen : AbstractScreen() {
@@ -59,10 +57,10 @@ class GameScreen : AbstractScreen() {
         // Rendu de la position du joueur
         renderer?.let {
             it.begin(ShapeRenderer.ShapeType.Filled)
-            it.color = Color(0f, 1f, 1f, 0.5f)
-            main.player?.let { player ->
-                it.rect(player.body.position.x, player.body.position.y, PLAYER_WIDTH, PLAYER_HEIGHT)
-            }
+            // it.color = Color(0f, 1f, 1f, 1f)
+            // main.player?.let { player ->
+            //   it.rect(player.body.position.x, player.body.position.y, PLAYER_WIDTH*PLAYER_GLOBAL_SCALE, PLAYER_HEIGHT*PLAYER_GLOBAL_SCALE)
+            // }
             it.end()
         }
     }
