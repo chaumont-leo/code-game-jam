@@ -1,4 +1,4 @@
-package utils
+package fr.github.sahrchivage.utils
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
