@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
+import fr.github.sahrchivage.models.ObstaclePatternManager
 import fr.github.sahrchivage.models.Player
 import fr.github.sahrchivage.screens.GameScreen
 
@@ -14,12 +15,14 @@ class Main : Game() {
     lateinit var world: World
     lateinit var renderer: ShapeRenderer
     lateinit var player: Player
+    lateinit var patternManager: ObstaclePatternManager
     var accumulator: Float = 0f
 
     override fun create() {
         world = World(Vector2(0F, 0F), true)
         renderer = ShapeRenderer()
         player = Player()
+        patternManager = ObstaclePatternManager.getInstance()
     }
 
     override fun render() {

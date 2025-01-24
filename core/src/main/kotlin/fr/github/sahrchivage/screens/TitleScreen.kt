@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import java.util.Random
 import fr.github.sahrchivage.Main
 
@@ -87,14 +86,6 @@ class TitleScreen : ScreenAdapter() {
             }
         })
         stage.addActor(quitButton)
-        
-        button.setScale(5f)
-        button.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Main.getMain().startGame();
-            }
-        })
-        stage.addActor(button)
     }
 
     override fun resize(width: Int, height: Int) {
