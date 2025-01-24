@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.ScreenUtils
+import com.badlogic.gdx.utils.viewport.FitViewport
+import java.util.Random
 import fr.github.sahrchivage.Main
 import fr.github.sahrchivage.utils.SpriteAnimator
 import fr.github.sahrchivage.utils.getInternalTextureAtlas

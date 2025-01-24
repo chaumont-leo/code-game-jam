@@ -1,22 +1,34 @@
 package fr.github.sahrchivage.models
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.physics.box2d.World
+val PATTERNS = arrayListOf<ObstaclePattern>(
+    ObstaclePattern.fromData(
+        listOf(
+            ObstacleData(0, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(1, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(1, 1, 40f, 40f, "obstacles/terrain.png"),
+
+            ObstacleData(2, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(3, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(3, 1, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(3, 2, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(4, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(5, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(5, 1, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(5, 2, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(5, 3, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(6, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(7, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(7, 3, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(7, 4, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(8, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(9, 0, 40f, 40f, "obstacles/terrain.png"),
+        )
+    )
+)
 
 class ObstaclePatternManager {
-    private val patterns = mutableListOf<ObstaclePattern>()
+    private val patterns = PATTERNS
     private var currentPatternIndex = 0
-
-    fun load(world: World) {
-        // On récupère chaque pattern d'obstacles dans /assets/patterns/
-        val patternFiles = Gdx.files.internal("patterns").list { _, name -> name.endsWith(".json") }
-
-        patternFiles.forEach {
-            // On charge le pattern
-            val pattern = ObstaclePattern.load(it, world)
-            patterns.add(pattern)
-        }
-    }
 
     fun getNextPattern(): ObstaclePattern {
         // On génère un index aléatoire
