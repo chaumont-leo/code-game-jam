@@ -25,7 +25,7 @@ class TitleScreen : ScreenAdapter() {
     private val logoTexture = Texture(Gdx.files.internal("ui/logo.png")) // Charger le logo
     private val background = TextureRegion(backgroundTexture)
     private val spriteBatch = SpriteBatch()
-    private var cloudX = 0f - 1882
+    private var cloudX = 0f
     private var cloudY = stage.viewport.worldHeight - cloud.height
     private var cloudX2 = 0f - 354
     private var cloudY2 = stage.viewport.worldHeight - cloud2.height
@@ -132,10 +132,6 @@ class TitleScreen : ScreenAdapter() {
         stage.act(delta)
         stage.draw()
     }
-
-
-
-
 
     override fun hide() {
         stage.dispose()

@@ -24,7 +24,8 @@ public class Lwjgl3Launcher {
         configuration.useVsync(true);
         configuration.setFullscreenMode(dm);
         configuration.setForegroundFPS(dm.refreshRate + 1);
-      
+//        configuration.
+
         return configuration;
     }
 }
