@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 
+private const val PATH = "audio/"
+
 class MusicHandler {
     // Music tracks
     private var menuMusic: Music? = null
@@ -35,6 +37,7 @@ class MusicHandler {
 
     private fun load() {
         // Load menu background music
+        loadMusic("menu_music", "music/204.mp3")
 
 
         // Load multiple in-game music tracks
@@ -46,21 +49,21 @@ class MusicHandler {
 
     private fun loadMusic(key: String, path: String) {
         try {
-            val music = Gdx.audio.newMusic(Gdx.files.internal(path))
+            val music = Gdx.audio.newMusic(Gdx.files.internal(PATH + path))
             music.isLooping = true
             music.volume = musicVolume
             gameMusicTracks[key] = music
         } catch (e: Exception) {
-            Gdx.app.error("MusicHandler", "Failed to load music: $path", e)
+            Gdx.app.error("MusicHandler", "Failed to load music: $PATH$path", e)
         }
     }
 
     private fun loadSound(key: String, path: String) {
         try {
-            val sound = Gdx.audio.newSound(Gdx.files.internal(path))
+            val sound = Gdx.audio.newSound(Gdx.files.internal(PATH + path))
             soundEffects[key] = sound
         } catch (e: Exception) {
-            Gdx.app.error("MusicHandler", "Failed to load sound: $path", e)
+            Gdx.app.error("MusicHandler", "Failed to load sound: $PATH$path", e)
         }
     }
 
