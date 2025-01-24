@@ -15,6 +15,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import com.github.czyzby.lml.parser.impl.attribute.building.RangeMaxValueLmlAttribute
+import java.sql.DriverManager.println
+import java.util.*
+import java.util.Random
 
 class TitleScreen : ScreenAdapter() {
     private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
@@ -22,11 +26,10 @@ class TitleScreen : ScreenAdapter() {
     private val cloud = Texture(Gdx.files.internal("ui/clouds_2.png"))
     private val background = TextureRegion(backgroundTexture)
     private val spriteBatch = SpriteBatch()
-
-    private var cloudX = 50f
-    private var cloudY = 500f // Position verticale initiale des nuages
-    private val cloudSpeed = 100f // Vitesse de déplacement horizontal
-    private val cloudSpeedY = 30f // Vitesse de descente des nuages
+    private var cloudX = 0f
+    private var cloudY = 600f
+    private val cloudSpeed = 400f
+    private val cloudSpeedY = 10f
 
     override fun show() {
         Gdx.input.inputProcessor = stage
@@ -92,17 +95,15 @@ class TitleScreen : ScreenAdapter() {
     override fun render(delta: Float) {
         ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
 
-        // Déplacer les nuages horizontalement
-        cloudX += cloudSpeed * delta // Déplacement horizontal fluide
+        cloudX += cloudSpeed * delta
         if (cloudX > stage.viewport.worldWidth) {
-            cloudX = -cloud.width.toFloat() // Remettre les nuages à gauche une fois qu'ils ont dépassé l'écran
+            cloudX = -cloud.width.toFloat()
+            val random = Random()
+            var valeurYcloud = random.nextInt(400, 600).toFloat()
+            cloudY = valeurYcloud.toFloat()
         }
+        cloudY -= cloudSpeedY * delta
 
-        // Descendre les nuages verticalement
-        cloudY -= cloudSpeedY * delta // Descente des nuages
-        if (cloudY + cloud.height < 0) {
-            cloudY = stage.viewport.worldHeight.toFloat() // Remonter les nuages une fois qu'ils sont sortis par le bas
-        }
 
         // Dessiner le fond d'écran
         spriteBatch.projectionMatrix = stage.camera.combined
