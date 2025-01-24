@@ -12,18 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Align
-import com.github.czyzby.lml.parser.impl.attribute.building.RangeMaxValueLmlAttribute
-import java.sql.DriverManager.println
-import java.util.*
 import java.util.Random
+import fr.github.sahrchivage.Main
+
 
 class TitleScreen : ScreenAdapter() {
     private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val cloud = Texture(Gdx.files.internal("ui/clouds_2.png"))
+    private val logoTexture = Texture(Gdx.files.internal("ui/logo.png")) // Charger le logo
     private val background = TextureRegion(backgroundTexture)
     private val spriteBatch = SpriteBatch()
     private var cloudX = 0f
@@ -34,14 +32,11 @@ class TitleScreen : ScreenAdapter() {
     override fun show() {
         Gdx.input.inputProcessor = stage
 
-        // Titre
-        val titleLabel = Label("Bienvenue dans le Jeu !", Skin(Gdx.files.internal("ui/uiskin.json")))
-        titleLabel.setFontScale(2f)
-        titleLabel.setPosition(
-            stage.viewport.worldWidth / 2 - titleLabel.prefWidth / 2,
-            stage.viewport.worldHeight - 100f
-        )
-        stage.addActor(titleLabel)
+        // Logo au lieu du titre
+        val logoWidth = 500f
+        val logoHeight = 500f
+        val logoX = stage.viewport.worldWidth / 2 - logoWidth / 2
+        val logoY = stage.viewport.worldHeight - logoHeight - 50f
 
         // Bouton Jouer
         val playButton = TextButton("Jouer", Skin(Gdx.files.internal("ui/uiskin.json")))
@@ -65,9 +60,10 @@ class TitleScreen : ScreenAdapter() {
             stage.viewport.worldWidth / 2 - settingsButton.width / 2,
             stage.viewport.worldHeight / 2 - 80f
         )
+        settingsButton.color = Color.BLUE
         settingsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                println("Ouverture des paramètres !")
+                Main.getMain().screen = SettingScreen();
             }
         })
         stage.addActor(settingsButton)
@@ -110,6 +106,9 @@ class TitleScreen : ScreenAdapter() {
         spriteBatch.begin()
         spriteBatch.draw(background, 0f, 0f, stage.viewport.worldWidth, stage.viewport.worldHeight)
 
+        // Dessiner le logo au lieu du titre
+        spriteBatch.draw(logoTexture, stage.viewport.worldWidth / 2 - 200f, stage.viewport.worldHeight - 250f, 400f, 200f)
+
         // Dessiner les nuages en mouvement
         spriteBatch.draw(cloud, cloudX, cloudY) // Placer les nuages à la position (cloudX, cloudY)
 
@@ -124,6 +123,7 @@ class TitleScreen : ScreenAdapter() {
         stage.dispose()
         backgroundTexture.dispose()
         cloud.dispose()
+        logoTexture.dispose()
         spriteBatch.dispose()
     }
 }
