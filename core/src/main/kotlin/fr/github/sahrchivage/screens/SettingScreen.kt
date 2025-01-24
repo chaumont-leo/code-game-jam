@@ -1,24 +1,18 @@
 package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
 import fr.github.sahrchivage.Main
 
-class SettingScreen : ScreenAdapter() {
-    private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
+class SettingScreen : AbstractScreen() {
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val logoTexture = Texture(Gdx.files.internal("ui/logo.png")) // Charger le logo
     private val background = TextureRegion(backgroundTexture)
@@ -30,7 +24,7 @@ class SettingScreen : ScreenAdapter() {
     private val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
+        super.show()
 
         // Logo au lieu du titre
         val logoWidth = 500f
@@ -105,12 +99,8 @@ class SettingScreen : ScreenAdapter() {
         stage.addActor(languageSelect)
     }
 
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
     override fun render(delta: Float) {
-        ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
+        super.render(delta)
 
         // Dessiner le fond d'écran
         spriteBatch.projectionMatrix = stage.camera.combined

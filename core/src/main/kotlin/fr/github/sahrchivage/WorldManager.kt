@@ -1,11 +1,13 @@
 package fr.github.sahrchivage
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
 
 class WorldManager {
     val world = World(WORLD_VECTOR, true)
+    val camera = OrthographicCamera(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     private var accumulator = 0f
 
     fun doPhysicalStep(delta: Float) {
