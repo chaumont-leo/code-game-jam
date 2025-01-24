@@ -22,9 +22,8 @@ public class Lwjgl3Launcher {
         Graphics.DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
         configuration.setTitle(ConstantsKt.WINDOW_TITLE);
         configuration.useVsync(true);
-        configuration.setFullscreenMode(dm);
+        configuration.setWindowedMode(dm.width, dm.height);
         configuration.setForegroundFPS(dm.refreshRate + 1);
-//        configuration.
 
         return configuration;
     }

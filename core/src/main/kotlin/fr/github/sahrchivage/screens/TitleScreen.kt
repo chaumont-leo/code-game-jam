@@ -1,24 +1,17 @@
 package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
-
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
 import fr.github.sahrchivage.Main
 
-
-class TitleScreen : ScreenAdapter() {
-    private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
+class TitleScreen : AbstractScreen() {
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val cloud = Texture(Gdx.files.internal("ui/clouds_2.png"))
     private val cloud2 = Texture(Gdx.files.internal("ui/clouds_4.png"))
@@ -34,7 +27,7 @@ class TitleScreen : ScreenAdapter() {
 
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
+        super.show()
 
         // Logo au lieu du titre
         val logoWidth = 500f
@@ -89,12 +82,8 @@ class TitleScreen : ScreenAdapter() {
         stage.addActor(quitButton)
     }
 
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
     override fun render(delta: Float) {
-        ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
+        super.render(delta)
 
         // Move cloud1
         cloudX += cloudSpeed * delta
