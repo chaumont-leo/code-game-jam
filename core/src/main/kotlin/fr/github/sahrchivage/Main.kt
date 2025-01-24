@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import fr.github.sahrchivage.screens.GameScreen
 import fr.github.sahrchivage.screens.TitleScreen
 import fr.github.sahrchivage.utils.getInternalTexture
 
@@ -58,6 +59,10 @@ class Main : Game() {
     }
 
     override fun dispose() {
+    }
+
+    fun startGame() {
+        this.setScreen(GameScreen())
     }
 
     companion object {
