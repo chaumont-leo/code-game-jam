@@ -18,4 +18,10 @@ const val PLAYER_SPRITE_OFFSET_X = -75f
 
 const val DEBUG = true
 
+const val FONT_SIZE = 32
+const val MED_FONT_SCALE_X = 0.5f
+const val MED_FONT_SCALE_Y = 0.5f
+const val LIGHT_FONT_SCALE_X = 0.5f
+const val LIGHT_FONT_SCALE_Y = 0.5f
+
 val WORLD_VECTOR = Vector2(0f, -9.81f)

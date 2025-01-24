@@ -30,23 +30,36 @@ class TitleScreen : AbstractScreen() {
     private var cloudY2 = stage.viewport.worldHeight - cloud2.height
     private val cloudSpeed = 100f
     private val cloudSpeedY = 10f
+
+    private val logoWidth = 250f
+    private val logoHeight = 250f
+    private val logoX = stage.viewport.worldWidth / 2 - logoWidth / 2
+    private val logoY = stage.viewport.worldHeight - logoHeight - 50f
+
     private var playerAnim = SpriteAnimator(2, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Idle"), 0.3f)
 
     override fun show() {
         super.show()
 
-        // Logo au lieu du titre
-        val logoWidth = 500f
-        val logoHeight = 500f
-        val logoX = stage.viewport.worldWidth / 2 - logoWidth / 2
-        val logoY = stage.viewport.worldHeight - logoHeight - 50f
+        // Dimensions et espacement
+        val buttonWidth = 400f
+        val buttonHeight = 100f
+        val buttonSpacing = 50f
+        val buttonsStartY = logoY - 200f // Position initiale sous le logo, avec un espacement plus grand
+
+        // Chargement du Skin et ajustement du style de texte
+        val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
+        val textButtonStyle = skin.get("default", TextButton.TextButtonStyle::class.java)
+        textButtonStyle.font = font
+        textButtonStyle.font.data.setScale(2f) // Augmente la taille du texte dans les boutons
 
         // Bouton Jouer
-        val playButton = TextButton("Jouer", Skin(Gdx.files.internal("ui/uiskin.json")))
-        playButton.setSize(200f, 50f)
+        val playButton = TextButton("Jouer", skin)
+        playButton.setSize(buttonWidth, buttonHeight)
+        playButton.style = textButtonStyle
         playButton.setPosition(
             stage.viewport.worldWidth / 2 - playButton.width / 2,
-            stage.viewport.worldHeight / 2
+            buttonsStartY
         )
         playButton.color = Color.GREEN
         playButton.addListener(object : ClickListener() {
@@ -57,28 +70,29 @@ class TitleScreen : AbstractScreen() {
         stage.addActor(playButton)
 
         // Bouton Paramètres
-        val settingsButton = TextButton("Paramètres", Skin(Gdx.files.internal("ui/uiskin.json")))
-        settingsButton.setSize(200f, 50f)
+        val settingsButton = TextButton("Paramètres", skin)
+        settingsButton.setSize(buttonWidth, buttonHeight)
+        settingsButton.style = textButtonStyle
         settingsButton.setPosition(
             stage.viewport.worldWidth / 2 - settingsButton.width / 2,
-            stage.viewport.worldHeight / 2 - 80f
+            buttonsStartY - (buttonHeight + buttonSpacing)
         )
         settingsButton.color = Color.BLUE
         settingsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Main.getMain().screen = SettingScreen();
+                Main.getMain().screen = SettingScreen()
             }
         })
         stage.addActor(settingsButton)
 
         // Bouton Quitter
-        val quitButton = TextButton("Quitter", Skin(Gdx.files.internal("ui/uiskin.json")))
-        quitButton.setSize(200f, 50f)
+        val quitButton = TextButton("Quitter", skin)
+        quitButton.setSize(buttonWidth, buttonHeight)
+        quitButton.style = textButtonStyle
         quitButton.setPosition(
             stage.viewport.worldWidth / 2 - quitButton.width / 2,
-            stage.viewport.worldHeight / 2 - 160f
+            buttonsStartY - 2 * (buttonHeight + buttonSpacing)
         )
-
         quitButton.color = Color.RED
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -86,7 +100,11 @@ class TitleScreen : AbstractScreen() {
             }
         })
         stage.addActor(quitButton)
+    }
 
+
+    override fun resize(width: Int, height: Int) {
+        stage.viewport.update(width, height, true)
         playerAnim.create()
         playerAnim.pos = Vector2(
             stage.viewport.worldWidth / 4,
@@ -122,7 +140,7 @@ class TitleScreen : AbstractScreen() {
         spriteBatch.draw(cloud, cloudX, cloudY)
         spriteBatch.draw(cloud2, cloudX2, cloudY2)
         // Dessiner le logo au lieu du titre
-        spriteBatch.draw(logoTexture, stage.viewport.worldWidth / 2 - 200f, stage.viewport.worldHeight - 250f, 400f, 200f)
+        spriteBatch.draw(logoTexture, logoX, logoY, logoWidth, logoHeight)
 
         // Dessiner les nuages en mouvement
         spriteBatch.draw(cloud, cloudX, cloudY) // Placer les nuages à la position (cloudX, cloudY)
