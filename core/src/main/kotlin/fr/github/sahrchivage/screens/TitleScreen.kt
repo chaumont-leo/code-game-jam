@@ -2,14 +2,17 @@ package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
+
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -28,6 +31,7 @@ class TitleScreen : ScreenAdapter() {
     private var cloudY = 600f
     private val cloudSpeed = 400f
     private val cloudSpeedY = 10f
+
 
     override fun show() {
         Gdx.input.inputProcessor = stage
@@ -75,6 +79,7 @@ class TitleScreen : ScreenAdapter() {
             stage.viewport.worldWidth / 2 - quitButton.width / 2,
             stage.viewport.worldHeight / 2 - 160f
         )
+
         quitButton.color = Color.RED
         quitButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -82,6 +87,14 @@ class TitleScreen : ScreenAdapter() {
             }
         })
         stage.addActor(quitButton)
+        
+        button.setScale(5f)
+        button.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Main.getMain().startGame();
+            }
+        })
+        stage.addActor(button)
     }
 
     override fun resize(width: Int, height: Int) {
