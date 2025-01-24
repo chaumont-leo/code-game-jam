@@ -13,7 +13,7 @@ class WorldManager {
     fun doPhysicalStep(delta: Float) {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
-        val frameTime = Gdx.graphics.deltaTime.coerceAtMost(0.25f)
+        val frameTime = delta.coerceAtMost(0.25f)
         accumulator += frameTime
         while (accumulator >= TIME_STEP) {
             world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS)

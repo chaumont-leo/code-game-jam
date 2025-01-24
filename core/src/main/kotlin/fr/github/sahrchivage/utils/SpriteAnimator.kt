@@ -52,16 +52,25 @@ open class SpriteAnimator(
 
     override fun render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        stateTime += Gdx.graphics.deltaTime
 
-        val currentFrame: TextureRegion = animation?.getKeyFrame(stateTime, true) ?: return
+        val currentFrame: TextureRegion = getCurrentFrame(Gdx.graphics.deltaTime) ?: return
         if (isReversed && !currentFrame.isFlipX)
             currentFrame.flip(true, false)
         else if (!isReversed && currentFrame.isFlipX)
             currentFrame.flip(true, false)
         spriteBatch?.begin()
-        spriteBatch?.draw(currentFrame, pos.x+offsetX, pos.y+offsetY, width*size, height*size)
+        if (spriteBatch != null)
+            drawInBatch(spriteBatch!!, currentFrame)
         spriteBatch?.end()
+    }
+
+    fun getCurrentFrame(delta: Float): TextureRegion? {
+        stateTime += delta
+        return animation?.getKeyFrame(stateTime, true)
+    }
+
+    fun drawInBatch(batch: SpriteBatch, frame: TextureRegion) {
+        batch.draw(frame, pos.x+offsetX, pos.y+offsetY, width*size, height*size)
     }
 
     override fun dispose() {

@@ -13,7 +13,7 @@ const val WINDOW_TITLE = "CodeGameJam"
 const val PLAYER_WIDTH = 110f
 const val PLAYER_HEIGHT = 215f
 const val PLAYER_SPRITE_SCALE = 0.5f
-const val PLAYER_GLOBAL_SCALE = 0.25f
+const val PLAYER_GLOBAL_SCALE = 0.5f
 const val PLAYER_SPRITE_OFFSET_X = -75f
 
 const val DEBUG = true
