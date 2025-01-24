@@ -33,7 +33,7 @@ class GameScreen : ScreenAdapter() {
 
 
     override fun show() {
-        groundTexture = Texture(Gdx.files.internal("ui/floor/terrainherbe.png"))
+        groundTexture = Texture(Gdx.files.internal("ui/floor/ground.png"))
         Gdx.input.inputProcessor = stage
         renderer = ShapeRenderer()
         main.player?.startAnimate(AnimationEnum.PLAYER_IDLE_ANIMATION)
