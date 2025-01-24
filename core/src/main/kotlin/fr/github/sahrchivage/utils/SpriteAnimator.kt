@@ -3,15 +3,16 @@ package fr.github.sahrchivage.utils
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
+import fr.github.sahrchivage.PLAYER_GLOBAL_SCALE
+import fr.github.sahrchivage.PLAYER_SPRITE_OFFSET_X
+import fr.github.sahrchivage.PLAYER_SPRITE_SCALE
 
-class SpriteAnimator(
+open class SpriteAnimator(
     private val cols: Int,
     private val rows: Int,
     private val region: TextureRegion,
@@ -23,6 +24,7 @@ class SpriteAnimator(
     var size = 1f
     var isReversed = false
     var offsetX = 0f
+    var offsetY = 0f
 
     val width: Int = region.regionWidth / cols
     val height: Int = region.regionHeight / rows
@@ -50,19 +52,43 @@ class SpriteAnimator(
 
     override fun render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        stateTime += Gdx.graphics.deltaTime
 
-        val currentFrame: TextureRegion = animation?.getKeyFrame(stateTime, true) ?: return
+        val currentFrame: TextureRegion = getCurrentFrame(Gdx.graphics.deltaTime) ?: return
         if (isReversed && !currentFrame.isFlipX)
             currentFrame.flip(true, false)
         else if (!isReversed && currentFrame.isFlipX)
             currentFrame.flip(true, false)
         spriteBatch?.begin()
-        spriteBatch?.draw(currentFrame, pos.x+offsetX, pos.y, width*size, height*size)
+        if (spriteBatch != null)
+            drawInBatch(spriteBatch!!, currentFrame)
         spriteBatch?.end()
+    }
+
+    fun getCurrentFrame(delta: Float): TextureRegion? {
+        stateTime += delta
+        return animation?.getKeyFrame(stateTime, true)
+    }
+
+    fun drawInBatch(batch: SpriteBatch, frame: TextureRegion) {
+        batch.draw(frame, pos.x+offsetX, pos.y+offsetY, width*size, height*size)
     }
 
     override fun dispose() {
         spriteBatch?.dispose()
+    }
+
+    companion object {
+        fun createPlayerAnimation(
+            cols: Int,
+            rows: Int,
+            region: TextureRegion,
+            animationSpeed: Float,
+            animationPlayMode: Animation.PlayMode = Animation.PlayMode.LOOP,
+        ) = SpriteAnimator(cols, rows, region, animationSpeed, animationPlayMode)
+                .also {
+                    it.size = PLAYER_SPRITE_SCALE * PLAYER_GLOBAL_SCALE
+                    it.offsetX = PLAYER_SPRITE_OFFSET_X * PLAYER_GLOBAL_SCALE
+                    it.offsetY = 50f
+                }
     }
 }

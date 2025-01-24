@@ -1,24 +1,20 @@
 package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
-
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
 import fr.github.sahrchivage.Main
+import fr.github.sahrchivage.utils.SpriteAnimator
+import fr.github.sahrchivage.utils.getInternalTextureAtlas
 
-
-class TitleScreen : ScreenAdapter() {
-    private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
+class TitleScreen : AbstractScreen() {
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val cloud = Texture(Gdx.files.internal("ui/clouds_2.png"))
     private val cloud2 = Texture(Gdx.files.internal("ui/clouds_4.png"))
@@ -37,9 +33,10 @@ class TitleScreen : ScreenAdapter() {
     private val logoX = stage.viewport.worldWidth / 2 - logoWidth / 2
     private val logoY = stage.viewport.worldHeight - logoHeight - 50f
 
+    private var playerAnim = SpriteAnimator(2, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Idle"), 0.3f)
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
+        super.show()
 
         // Dimensions et espacement
         val buttonWidth = 400f
@@ -50,11 +47,13 @@ class TitleScreen : ScreenAdapter() {
         // Chargement du Skin et ajustement du style de texte
         val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
         val textButtonStyle = skin.get("default", TextButton.TextButtonStyle::class.java)
+        textButtonStyle.font = font
         textButtonStyle.font.data.setScale(2f) // Augmente la taille du texte dans les boutons
 
         // Bouton Jouer
         val playButton = TextButton("Jouer", skin)
         playButton.setSize(buttonWidth, buttonHeight)
+        playButton.style = textButtonStyle
         playButton.setPosition(
             stage.viewport.worldWidth / 2 - playButton.width / 2,
             buttonsStartY
@@ -70,6 +69,7 @@ class TitleScreen : ScreenAdapter() {
         // Bouton Paramètres
         val settingsButton = TextButton("Paramètres", skin)
         settingsButton.setSize(buttonWidth, buttonHeight)
+        settingsButton.style = textButtonStyle
         settingsButton.setPosition(
             stage.viewport.worldWidth / 2 - settingsButton.width / 2,
             buttonsStartY - (buttonHeight + buttonSpacing)
@@ -85,6 +85,7 @@ class TitleScreen : ScreenAdapter() {
         // Bouton Quitter
         val quitButton = TextButton("Quitter", skin)
         quitButton.setSize(buttonWidth, buttonHeight)
+        quitButton.style = textButtonStyle
         quitButton.setPosition(
             stage.viewport.worldWidth / 2 - quitButton.width / 2,
             buttonsStartY - 2 * (buttonHeight + buttonSpacing)
@@ -99,13 +100,17 @@ class TitleScreen : ScreenAdapter() {
     }
 
 
-
     override fun resize(width: Int, height: Int) {
         stage.viewport.update(width, height, true)
+        playerAnim.create()
+        playerAnim.pos = Vector2(
+            stage.viewport.worldWidth / 4,
+            stage.viewport.worldHeight / 2)
+        playerAnim.size = 0.5f
     }
 
     override fun render(delta: Float) {
-        ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
+        super.render(delta)
 
         // Move cloud1
         cloudX += cloudSpeed * delta
@@ -136,6 +141,10 @@ class TitleScreen : ScreenAdapter() {
 
         // Dessiner les nuages en mouvement
         spriteBatch.draw(cloud, cloudX, cloudY) // Placer les nuages à la position (cloudX, cloudY)
+
+        val currentAnimFrame = playerAnim.getCurrentFrame(delta)
+        if (currentAnimFrame != null)
+            playerAnim.drawInBatch(spriteBatch, currentAnimFrame)
 
         spriteBatch.end()
 

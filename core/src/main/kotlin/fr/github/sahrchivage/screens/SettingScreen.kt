@@ -1,26 +1,21 @@
 package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
+import fr.github.sahrchivage.MED_FONT_SCALE_X
+import fr.github.sahrchivage.MED_FONT_SCALE_Y
 import fr.github.sahrchivage.Main
 
-class SettingScreen : ScreenAdapter() {
-    private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
+class SettingScreen : AbstractScreen() {
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val logoTexture = Texture(Gdx.files.internal("ui/logo.png")) // Charger le logo
     private val background = TextureRegion(backgroundTexture)
@@ -30,30 +25,35 @@ class SettingScreen : ScreenAdapter() {
     private var difficulty: String = "Moyenne" // Valeur initiale de la difficulté
     private var language: String = "Français" // Valeur initiale de la langue
     private val skin = Skin(Gdx.files.internal("ui/uiskin.json"))
-    private val labelsize = 2f
+    private val labelSize = 2f
     private val logoWidth = 250f
     private val logoHeight = 250f
     private val logoX = stage.viewport.worldWidth / 2 - logoWidth / 2
     private val logoY = stage.viewport.worldHeight - logoHeight
+    private val labelStyle = Label.LabelStyle().also { it.font = font }
 
+
+    private fun createLabel(name: String): Label {
+        return Label(name, skin)
+            .also {
+                it.style = labelStyle
+                it.setAlignment(Align.center)
+                it.color = Color.BLACK
+            }
+    }
 
     override fun show() {
-        Gdx.input.inputProcessor = stage
+        super.show()
 
         // Calcul de l'espacement
         val padding = 25f // Espacement vertical entre les éléments
-        val startY = stage.viewport.worldHeight - 50f // Position de départ en haut
-        var currentY = startY
 
         // Logo
-        currentY = logoY - padding
+        var currentY: Float = logoY - padding
 
         // Curseur Volume
-        val volumeLabel = Label("Volume", skin)
-        volumeLabel.setFontScale(labelsize)
-        volumeLabel.setAlignment(Align.center)
-        volumeLabel.setPosition(stage.viewport.worldWidth / 2 - volumeLabel.width / 2, currentY - volumeLabel.height)
-        volumeLabel.color = Color.BLACK
+        val volumeLabel = createLabel("Volume")
+            .also { it.setPosition(stage.viewport.worldWidth / 2 - it.width / 2, currentY - it.height) }
         stage.addActor(volumeLabel)
         currentY -= (volumeLabel.height + padding)
 
@@ -71,11 +71,8 @@ class SettingScreen : ScreenAdapter() {
         currentY -= (volumeSlider.height + padding)
 
         // Sélecteur de difficulté
-        val difficultyLabel = Label("Difficulté", skin)
-        difficultyLabel.setFontScale(labelsize)
-        difficultyLabel.setAlignment(Align.center)
-        difficultyLabel.setPosition(stage.viewport.worldWidth / 2 - difficultyLabel.width / 2, currentY - difficultyLabel.height)
-        difficultyLabel.color = Color.BLACK
+        val difficultyLabel = createLabel("Difficulté")
+            .also { it.setPosition(stage.viewport.worldWidth / 2 - it.width / 2, currentY - it.height) }
         stage.addActor(difficultyLabel)
         currentY -= (difficultyLabel.height + padding)
 
@@ -93,11 +90,8 @@ class SettingScreen : ScreenAdapter() {
         currentY -= (difficultySelect.height + padding)
 
         // Sélecteur de langue
-        val languageLabel = Label("Langue", skin)
-        languageLabel.setFontScale(labelsize)
-        languageLabel.setAlignment(Align.center)
-        languageLabel.color = Color.BLACK
-        languageLabel.setPosition(stage.viewport.worldWidth / 2 - languageLabel.width / 2, currentY - languageLabel.height)
+        val languageLabel = createLabel("Langue")
+            .also { it.setPosition(stage.viewport.worldWidth / 2 - it.width / 2, currentY - it.height) }
         stage.addActor(languageLabel)
         currentY -= (languageLabel.height + padding)
 
@@ -115,12 +109,8 @@ class SettingScreen : ScreenAdapter() {
         currentY -= (languageSelect.height + padding)
 
         // Case à cocher pour le plein écran
-        val fullscreenLabel = Label("Mode Plein Écran", skin)
-        fullscreenLabel.setAlignment(Align.center)
-        fullscreenLabel.color = Color.BLACK
-        fullscreenLabel.setFontScale(labelsize)
-
-        fullscreenLabel.setPosition(stage.viewport.worldWidth / 2 - fullscreenLabel.width / 2, currentY - fullscreenLabel.height)
+        val fullscreenLabel = createLabel("Mode Plein Écran")
+            .also { it.setPosition(stage.viewport.worldWidth / 2 - it.width / 2, currentY - it.height) }
         stage.addActor(fullscreenLabel)
         currentY -= (fullscreenLabel.height + padding)
 
@@ -165,7 +155,7 @@ class SettingScreen : ScreenAdapter() {
     }
 
     override fun render(delta: Float) {
-        ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
+        super.render(delta)
 
         // Dessiner le fond d'écran
         spriteBatch.projectionMatrix = stage.camera.combined
