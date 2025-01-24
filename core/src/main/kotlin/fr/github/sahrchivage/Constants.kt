@@ -15,4 +15,6 @@ const val PLAYER_HEIGHT = 215f
 const val PLAYER_SCALE = 0.5f
 const val PLAYER_SPRITE_OFFSET = -80f
 
+const val DEBUG = true
+
 val WORLD_VECTOR = Vector2(0f, -9.81f)

@@ -1,9 +1,7 @@
 package fr.github.sahrchivage.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -11,26 +9,17 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import com.badlogic.gdx.physics.box2d.PolygonShape
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.ScreenUtils
-import com.badlogic.gdx.utils.viewport.FitViewport
-import fr.github.sahrchivage.Main
 import fr.github.sahrchivage.PLAYER_HEIGHT
 import fr.github.sahrchivage.PLAYER_WIDTH
 import fr.github.sahrchivage.enums.AnimationEnum
 
-class GameScreen : ScreenAdapter() {
-    private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
-    private val main = Main.getMain()
+class GameScreen : AbstractScreen() {
     private var renderer: ShapeRenderer? = null
     private lateinit var groundBody: Body
     private lateinit var groundTexture: Texture
     private var groundPositionX = 0f
     private val scrollSpeed = 100f // Vitesse de défilement du sol en pixels par seconde
     private val batch = SpriteBatch()
-
-
 
     override fun show() {
         groundTexture = Texture(Gdx.files.internal("ui/floor/ground.png"))
@@ -40,67 +29,53 @@ class GameScreen : ScreenAdapter() {
         createGround()
     }
 
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
     override fun render(delta: Float) {
-        // Nettoyage de l'écran
-        ScreenUtils.clear(1f, 1f, 1f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        super.render(delta)
 
-        // Mise à jour du joueur
-        main.player?.update()
-
-        // Mise à jour du monde physique
+        // Mise à jour du monde et du joueur
         main.worldManager.doPhysicalStep(delta)
-
-        // Mise à jour et rendu de la scène
-        stage.act(delta)
-        stage.draw()
+        main.player?.update()
 
         // Rendu du sol
         batch.begin()
+        batch.projectionMatrix = camera.combined
+
         val groundHeight = 50f
         val groundWidth = groundTexture.width.toFloat()
 
-        // Faire défiler le sol
+        // Déplacement du sol
         groundPositionX -= scrollSpeed * delta
         if (groundPositionX <= -groundTexture.width) {
             groundPositionX = 0f
         }
 
-        // Dessiner le sol sur toute la largeur
-        for (x in 0 until (stage.viewport.worldWidth.toInt() + groundWidth.toInt()) step groundWidth.toInt()) {
+        // Couvrir toute la largeur visible avec le sol
+        for (x in -groundWidth.toInt() until (viewport.worldWidth.toInt() + groundWidth.toInt()) step groundWidth.toInt()) {
             batch.draw(groundTexture, groundPositionX + x.toFloat(), 0f, groundWidth, groundHeight)
         }
+
         batch.end()
 
-        // Rendu de la position du joueur avec ShapeRenderer
-        if (renderer != null) {
-            Gdx.gl.glEnable(GL20.GL_BLEND)
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-
-            renderer!!.begin(ShapeRenderer.ShapeType.Filled)
-            renderer!!.color = Color(0f, 1f, 1f, 0.5f) // Couleur avec transparence
-            if (main.player != null) {
-                renderer!!.rect(
-                    main.player!!.body.position.x,
-                    main.player!!.body.position.y,
-                    PLAYER_WIDTH,
-                    PLAYER_HEIGHT
-                )
+        // Rendu de la position du joueur
+        renderer?.let {
+            it.begin(ShapeRenderer.ShapeType.Filled)
+            it.color = Color(0f, 1f, 1f, 0.5f)
+            main.player?.let { player ->
+                it.rect(player.body.position.x, player.body.position.y, PLAYER_WIDTH, PLAYER_HEIGHT)
             }
-            renderer!!.end()
-
-            Gdx.gl.glDisable(GL20.GL_BLEND) // Désactiver le blending
+            it.end()
         }
     }
 
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        batch.projectionMatrix = camera.combined
+    }
 
     override fun hide() {
         stage.dispose()
     }
+
     private fun createGround() {
         val groundDef = BodyDef()
         groundDef.type = BodyDef.BodyType.StaticBody // Le sol est statique

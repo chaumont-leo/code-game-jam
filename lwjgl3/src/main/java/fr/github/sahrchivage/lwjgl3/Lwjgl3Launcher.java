@@ -24,7 +24,6 @@ public class Lwjgl3Launcher {
         configuration.useVsync(true);
         configuration.setWindowedMode(dm.width, dm.height);
         configuration.setForegroundFPS(dm.refreshRate + 1);
-//        configuration.
 
         return configuration;
     }
