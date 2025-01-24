@@ -22,6 +22,7 @@ class SpriteAnimator(
     var pos = Vector2()
     var size = 1f
     var isReversed = false
+    var offsetX = 0f
 
     val width: Int = region.regionWidth / cols
     val height: Int = region.regionHeight / rows
@@ -57,7 +58,7 @@ class SpriteAnimator(
         else if (!isReversed && currentFrame.isFlipX)
             currentFrame.flip(true, false)
         spriteBatch?.begin()
-        spriteBatch?.draw(currentFrame, pos.x, pos.y, width*size, height*size)
+        spriteBatch?.draw(currentFrame, pos.x+offsetX, pos.y, width*size, height*size)
         spriteBatch?.end()
     }
 
