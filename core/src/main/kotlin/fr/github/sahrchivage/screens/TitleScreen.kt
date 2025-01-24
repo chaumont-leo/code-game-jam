@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import fr.github.sahrchivage.Main
+import fr.github.sahrchivage.utils.SpriteAnimator
+import fr.github.sahrchivage.utils.getInternalTextureAtlas
 
 class TitleScreen : AbstractScreen() {
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
@@ -24,7 +27,7 @@ class TitleScreen : AbstractScreen() {
     private var cloudY2 = stage.viewport.worldHeight - cloud2.height
     private val cloudSpeed = 100f
     private val cloudSpeedY = 10f
-
+    private var playerAnim = SpriteAnimator(2, 1, getInternalTextureAtlas("player/PlayerSprites.atlas").findRegion("Idle"), 0.3f)
 
     override fun show() {
         super.show()
@@ -80,6 +83,12 @@ class TitleScreen : AbstractScreen() {
             }
         })
         stage.addActor(quitButton)
+
+        playerAnim.create()
+        playerAnim.pos = Vector2(
+            stage.viewport.worldWidth / 4,
+            stage.viewport.worldHeight / 2)
+        playerAnim.size = 0.5f
     }
 
     override fun render(delta: Float) {
@@ -114,6 +123,10 @@ class TitleScreen : AbstractScreen() {
 
         // Dessiner les nuages en mouvement
         spriteBatch.draw(cloud, cloudX, cloudY) // Placer les nuages à la position (cloudX, cloudY)
+
+        val currentAnimFrame = playerAnim.getCurrentFrame(delta)
+        if (currentAnimFrame != null)
+            playerAnim.drawInBatch(spriteBatch, currentAnimFrame)
 
         spriteBatch.end()
 
