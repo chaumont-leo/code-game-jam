@@ -2,13 +2,14 @@ package fr.github.sahrchivage.models
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import fr.github.sahrchivage.Main
+import fr.github.sahrchivage.utils.getInternalTextureAtlas
 
 data class ObstacleData(
     val x: Int,
     val y: Int,
     val width: Float,
     val height: Float,
-    val texturePath: String
+    val textureIndex: String
 )
 
 class ObstaclePattern(
@@ -24,7 +25,8 @@ class ObstaclePattern(
 
     companion object {
         fun fromData(data: List<ObstacleData>): ObstaclePattern {
-            val world = Main.getMain().world
+            val atlas = getInternalTextureAtlas("obstacles/tiles.atlas")
+            val world = Main.getMain().worldManager.world
             val obstacles = data.map {
                 Obstacle(
                     world,
@@ -32,7 +34,8 @@ class ObstaclePattern(
                     it.y * it.height,
                     it.width,
                     it.height,
-                    it.texturePath
+                    it.textureIndex,
+                    atlas
                 )
             }
             return ObstaclePattern(obstacles, 0f)

@@ -1,5 +1,7 @@
 package fr.github.sahrchivage.models
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.FixtureDef
@@ -14,10 +16,11 @@ open class Obstacle(
     var y: Float = 0f,
     val width: Float = 0f,
     val height: Float = 0f,
-    private val texturePath: String = "",
+    private val textureIndex: String = "",
+    private val atlas: TextureAtlas
 ) {
     lateinit var body: Body
-    val texture = getInternalTexture(texturePath)
+    val texture: Texture = atlas.findRegion(textureIndex).texture
 
     init {
         createBody()

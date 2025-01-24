@@ -3,25 +3,25 @@ package fr.github.sahrchivage.models
 val PATTERNS = arrayListOf<ObstaclePattern>(
     ObstaclePattern.fromData(
         listOf(
-            ObstacleData(0, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(1, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(1, 1, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(0, 0, 40f, 40f, "grass_tl"),
+            ObstacleData(1, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(1, 1, 40f, 40f, "copper"),
 
-            ObstacleData(2, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(3, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(3, 1, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(3, 2, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(4, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(5, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(5, 1, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(5, 2, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(5, 3, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(6, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(7, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(7, 3, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(7, 4, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(8, 0, 40f, 40f, "obstacles/terrain.png"),
-            ObstacleData(9, 0, 40f, 40f, "obstacles/terrain.png"),
+            ObstacleData(2, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(3, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(3, 1, 40f, 40f, "copper_vb"),
+            ObstacleData(3, 2, 40f, 40f, "copper_vt"),
+            ObstacleData(4, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(5, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(5, 1, 40f, 40f, "copper_vb"),
+            ObstacleData(5, 2, 40f, 40f, "copper_vm"),
+            ObstacleData(5, 3, 40f, 40f, "copper_vt"),
+            ObstacleData(6, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(7, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(7, 3, 40f, 40f, "copper_vb"),
+            ObstacleData(7, 4, 40f, 40f, "copper_vt"),
+            ObstacleData(8, 0, 40f, 40f, "grass_tm"),
+            ObstacleData(9, 0, 40f, 40f, "grass_tr"),
         )
     )
 )
