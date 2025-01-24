@@ -24,11 +24,14 @@ class TitleScreen : ScreenAdapter() {
     private val stage = Stage(FitViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private val backgroundTexture = Texture(Gdx.files.internal("ui/background1.png"))
     private val cloud = Texture(Gdx.files.internal("ui/clouds_2.png"))
+    private val cloud2 = Texture(Gdx.files.internal("ui/clouds_4.png"))
     private val background = TextureRegion(backgroundTexture)
     private val spriteBatch = SpriteBatch()
-    private var cloudX = 0f
-    private var cloudY = 600f
-    private val cloudSpeed = 400f
+    private var cloudX = 0f - 1882
+    private var cloudY = stage.viewport.worldHeight - cloud.height
+    private var cloudX2 = 0f - 354
+    private var cloudY2 = stage.viewport.worldHeight - cloud2.height
+    private val cloudSpeed = 100f
     private val cloudSpeedY = 10f
 
     override fun show() {
@@ -95,30 +98,41 @@ class TitleScreen : ScreenAdapter() {
     override fun render(delta: Float) {
         ScreenUtils.clear(0.1f, 0.1f, 0.1f, 1f)
 
+        // Move cloud1
         cloudX += cloudSpeed * delta
         if (cloudX > stage.viewport.worldWidth) {
             cloudX = -cloud.width.toFloat()
-            val random = Random()
-            var valeurYcloud = random.nextInt(400, 600).toFloat()
-            cloudY = valeurYcloud.toFloat()
+            cloudY = stage.viewport.worldHeight - cloud.height
         }
         cloudY -= cloudSpeedY * delta
+        if (cloudX > stage.viewport.worldWidth / 3 || cloudX2 > -cloud2.width) {
+            cloudX2 += cloudSpeed * delta
+            if (cloudX2 > stage.viewport.worldWidth) {
+                cloudX2 = -cloud2.width.toFloat()
+                cloudY2 = stage.viewport.worldHeight - cloud2.height
+            }
+            cloudY2 -= cloudSpeedY * delta
+        }
 
-
-        // Dessiner le fond d'écran
+        // Draw background
         spriteBatch.projectionMatrix = stage.camera.combined
         spriteBatch.begin()
         spriteBatch.draw(background, 0f, 0f, stage.viewport.worldWidth, stage.viewport.worldHeight)
 
-        // Dessiner les nuages en mouvement
-        spriteBatch.draw(cloud, cloudX, cloudY) // Placer les nuages à la position (cloudX, cloudY)
+        // Draw clouds
+        spriteBatch.draw(cloud, cloudX, cloudY)
+        spriteBatch.draw(cloud2, cloudX2, cloudY2)
 
         spriteBatch.end()
 
-        // Dessiner les éléments de l'interface
+        // Draw stage UI elements
         stage.act(delta)
         stage.draw()
     }
+
+
+
+
 
     override fun hide() {
         stage.dispose()
