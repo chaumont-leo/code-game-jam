@@ -5,16 +5,16 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.World
+import fr.github.sahrchivage.Main
 import fr.github.sahrchivage.utils.getInternalTexture
 
 open class Obstacle(
-    private val world: World,
-    var x: Float,
-    var y: Float,
-    val width: Float,
-    val height: Float,
-    private val texturePath: String,
-    private var speed: Float = 0f
+    internal var world: World = Main.getMain().world,
+    var x: Float = 0f,
+    var y: Float = 0f,
+    val width: Float = 0f,
+    val height: Float = 0f,
+    private val texturePath: String = "",
 ) {
     lateinit var body: Body
     val texture = getInternalTexture(texturePath)
@@ -48,14 +48,10 @@ open class Obstacle(
         body.createFixture(fixtureDef)
     }
 
-    fun update() {
+    fun update(speed: Float) {
         body.setLinearVelocity(-speed, 0f)
         x = body.position.x
         y = body.position.y
-    }
-
-    fun setSpeed(newSpeed: Float) {
-        speed = newSpeed
     }
 
     fun dispose() {
