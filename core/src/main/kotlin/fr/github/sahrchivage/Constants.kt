@@ -8,3 +8,8 @@ const val VELOCITY_ITERATIONS = 6
 const val POSITION_ITERATIONS = 2
 
 const val WINDOW_TITLE = "CodeGameJam"
+
+const val PLAYER_WIDTH = 110f
+const val PLAYER_HEIGHT = 215f
+const val PLAYER_SCALE = 0.5f
+const val PLAYER_SPRITE_OFFSET = -80f
