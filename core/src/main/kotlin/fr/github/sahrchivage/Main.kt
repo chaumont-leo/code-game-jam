@@ -20,11 +20,11 @@ class Main : Game() {
     override fun create() {
         worldManager = WorldManager()
         setScreen(TitleScreen())
-        // FIXME: CRASH /!\ patternManager = ObstaclePatternManager.getInstance()
     }
 
     fun startGame() {
         player = Player()
+        patternManager = ObstaclePatternManager.getInstance()
         this.setScreen(GameScreen())
     }
 

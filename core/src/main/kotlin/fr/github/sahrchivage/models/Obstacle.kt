@@ -1,5 +1,8 @@
 package fr.github.sahrchivage.models
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.FixtureDef
@@ -14,10 +17,11 @@ open class Obstacle(
     var y: Float = 0f,
     val width: Float = 0f,
     val height: Float = 0f,
-    private val texturePath: String = "",
+    private val textureIndex: String = "",
+    private val atlas: TextureAtlas
 ) {
     lateinit var body: Body
-    val texture = getInternalTexture(texturePath)
+    val region: TextureRegion = atlas.findRegion(textureIndex)
 
     init {
         createBody()
@@ -27,7 +31,7 @@ open class Obstacle(
         // Configurer le body Box2D
         val bodyDef = BodyDef().apply {
             type = BodyDef.BodyType.KinematicBody
-            position.set(x, y)
+            position.set(x+500f, y)
         }
 
         // Créer la forme de collision
@@ -56,6 +60,5 @@ open class Obstacle(
 
     fun dispose() {
         body.fixtureList.forEach { _ -> world.destroyBody(body) }
-        texture.dispose()
     }
 }

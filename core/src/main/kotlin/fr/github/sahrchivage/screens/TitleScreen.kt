@@ -58,7 +58,7 @@ class TitleScreen : AbstractScreen() {
         playButton.setSize(buttonWidth, buttonHeight)
         playButton.style = textButtonStyle
         playButton.setPosition(
-            stage.viewport.worldWidth / 2 - playButton.width / 2,
+            stage.viewport.screenWidth / 2 - playButton.width / 2,
             buttonsStartY
         )
         playButton.color = Color.GREEN
@@ -74,7 +74,7 @@ class TitleScreen : AbstractScreen() {
         settingsButton.setSize(buttonWidth, buttonHeight)
         settingsButton.style = textButtonStyle
         settingsButton.setPosition(
-            stage.viewport.worldWidth / 2 - settingsButton.width / 2,
+            stage.viewport.screenWidth / 2 - settingsButton.width / 2,
             buttonsStartY - (buttonHeight + buttonSpacing)
         )
         settingsButton.color = Color.BLUE
@@ -90,7 +90,7 @@ class TitleScreen : AbstractScreen() {
         quitButton.setSize(buttonWidth, buttonHeight)
         quitButton.style = textButtonStyle
         quitButton.setPosition(
-            stage.viewport.worldWidth / 2 - quitButton.width / 2,
+            stage.viewport.screenWidth / 2 - quitButton.width / 2,
             buttonsStartY - 2 * (buttonHeight + buttonSpacing)
         )
         quitButton.color = Color.RED
@@ -107,9 +107,9 @@ class TitleScreen : AbstractScreen() {
         stage.viewport.update(width, height, true)
         playerAnim.create()
         playerAnim.pos = Vector2(
-            stage.viewport.worldWidth / 4,
-            stage.viewport.worldHeight / 2)
-        playerAnim.size = 0.5f
+            stage.viewport.screenWidth.toFloat()  / 4 - playerAnim.width/2,
+            stage.viewport.screenHeight.toFloat() / 2 - playerAnim.height/2)
+        playerAnim.size = 1f
     }
 
     override fun render(delta: Float) {

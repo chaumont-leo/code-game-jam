@@ -10,6 +10,7 @@ import fr.github.sahrchivage.PLAYER_GLOBAL_SCALE
 import fr.github.sahrchivage.PLAYER_HEIGHT
 import fr.github.sahrchivage.PLAYER_WIDTH
 import fr.github.sahrchivage.enums.AnimationEnum
+import fr.github.sahrchivage.utils.getInternalTexture
 
 class GameScreen : AbstractScreen() {
     private var renderer: ShapeRenderer? = null
@@ -20,6 +21,7 @@ class GameScreen : AbstractScreen() {
     private val batch = SpriteBatch()
     private val groundHeight = 50f
     private val debugRenderer = Box2DDebugRenderer()
+    private val textureBg = getInternalTexture("bg.png")
 
     override fun show() {
         groundTexture = Texture(Gdx.files.internal("ui/floor/ground.png"))
@@ -34,11 +36,12 @@ class GameScreen : AbstractScreen() {
 
         // Mise à jour du monde et du joueur
         main.worldManager.doPhysicalStep(delta)
-        main.player?.update()
 
         // Rendu du sol
         batch.begin()
         batch.projectionMatrix = camera.combined
+
+        batch.draw(textureBg, 0f, 0f, viewport.screenWidth.toFloat(), viewport.screenHeight.toFloat())
 
         val groundWidth = groundTexture.width.toFloat()
 
@@ -53,6 +56,9 @@ class GameScreen : AbstractScreen() {
             batch.draw(groundTexture, groundPositionX + x.toFloat(), 0f, groundWidth, groundHeight)
         }
 
+        main.patternManager.getNextPattern().render(batch)
+
+        main.player?.update(batch)
         batch.end()
 
         debugRenderer.render(main.worldManager.world, camera.combined)
@@ -65,6 +71,9 @@ class GameScreen : AbstractScreen() {
 
     override fun hide() {
         stage.dispose()
+        batch.dispose()
+        textureBg.dispose()
+        groundTexture.dispose()
     }
 
     private fun createGround() {

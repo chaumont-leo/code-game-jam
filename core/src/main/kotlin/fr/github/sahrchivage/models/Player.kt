@@ -3,6 +3,7 @@ package fr.github.sahrchivage.models
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import fr.github.sahrchivage.*
@@ -23,7 +24,7 @@ class Player : BaseModel(), IAnimable
         bodyDef.position.set(Vector2(10f, 50f))
 
         body = Main.getMain().worldManager.world.createBody(bodyDef)
-        shape = PolygonShape().apply { setAsBox(1f, 1f) }
+        shape = PolygonShape().apply { setAsBox(50f, 50f) }
 
         val fixtureDef = FixtureDef()
         fixtureDef.shape = shape
@@ -39,12 +40,11 @@ class Player : BaseModel(), IAnimable
         walkAnimation.create()
         jumpAnimation.create()
 
-        body.linearVelocity = Vector2(0f, 0f)
     }
 
-    fun update() {
+    fun update(batch: SpriteBatch? = null) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            body.applyForce(Vector2(0f, 50f), body.position, true)
+            body.applyForce(Vector2(0f, 100f), body.position, true)
             startAnimate(AnimationEnum.PLAYER_JUMP_ANIMATION)
         }
 
@@ -52,7 +52,13 @@ class Player : BaseModel(), IAnimable
             val tmp = body.position
             tmp.y = 0f
             currentAnimation!!.pos = tmp
-            currentAnimation!!.render()
+
+            if (batch != null) {
+                val frame = currentAnimation!!.getCurrentFrame(Gdx.graphics.deltaTime) ?: return
+                currentAnimation!!.drawInBatch(batch, frame)
+            } else {
+                currentAnimation!!.render()
+            }
         }
     }
 
